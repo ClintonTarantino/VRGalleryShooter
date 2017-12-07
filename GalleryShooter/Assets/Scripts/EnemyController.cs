@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent (typeof(Collider))]
 public class EnemyController : MonoBehaviour {
+
+    public Text scoreText;
 
     CardboardHead head;
     Vector3 startPosition;
     SpriteRenderer enemyRenderer;
     Collider enemyCollider;
     AudioSource deadSound;
+
+    static int score;
 
     void Start ()
     {
@@ -31,10 +36,12 @@ public class EnemyController : MonoBehaviour {
     {
         RaycastHit hit;
         bool isLookedAt = GetComponent<Collider>().Raycast(head.Gaze, out hit, Mathf.Infinity);
-        if (Cardboard.SDK.Triggered && isLookedAt)
+        /*if (Cardboard.SDK.Triggered && isLookedAt)
         
             EnemyDead();
-        
+     */
+        if (isLookedAt)
+            EnemyDead();
     }
 
     IEnumerator SpawnRate()
@@ -54,6 +61,9 @@ public class EnemyController : MonoBehaviour {
         enemyRenderer.enabled = false;
 
         deadSound.Play();
+
+        score++;
+        scoreText.text = " " + score;
     }
 
 }
